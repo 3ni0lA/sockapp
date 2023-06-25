@@ -1,0 +1,93 @@
+# AWS provider
+
+provider "aws" {
+  region     = "eu-west-2"
+  access_key = var.accesskey
+  secret_key = var.secretkey
+
+}
+  provider "aws" {
+  region  = var.region
+}
+
+terraform {
+  required_providers {
+    acme = {
+      source  = "vancluever/acme"
+      version = "~> 2.0"
+    }
+
+     route53 = {
+      source = "winebarrel/route53"
+      version = "0.1.1"
+    }
+        kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.0.0"
+    }
+  
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.14.0"
+  }
+}
+
+  }
+
+
+# Terraform Cloud Eks Workspace
+
+# terraform {
+#   cloud {
+#     organization = "Abdul-Barri"
+
+#     workspaces {
+#       name = "infrastructure"
+#     }
+#   }
+# }
+
+terraform {
+  backend "s3" {
+    bucket = "terraform-state-08174509694"
+    key = "global/infrastructure/terraform.tfstate"
+    region     = "eu-west-2"
+    dynamodb_table = "terraform-state-lock"
+    encrypt = true
+  }
+}
+
+# Kubernetes provider configuration
+
+provider "kubernetes" {
+  host                   = aws_eks_cluster.eks-cluster.endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.certificate_authority[0].data)
+  version          = "2.16.1"
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1alpha1"
+    args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.eks-cluster.name]
+    command     = "aws"
+  }
+}
+
+# Kubectl provider configuration
+
+provider "kubectl" {
+  host                   = aws_eks_cluster.eks-cluster.endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.certificate_authority[0].data)
+  exec {
+    api_version = "client.authentication.k8s.io/v1alpha1"
+    args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.eks-cluster.name]
+    command     = "aws"
+  }
+}
+ #Other Providers
+ provider "acme" {
+  server_url = "https://acme-v02.api.letsencrypt.org/directory"
+}
+
+provider "route53" {
+  aws_region = "eu-west-2"
+}
+
