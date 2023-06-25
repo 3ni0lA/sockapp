@@ -7,9 +7,6 @@ provider "aws" {
  resource "aws_s3_bucket" "statefile-bucket" {
   bucket = "sockapp-bucket"
 
-  
-
-
   lifecycle {
     prevent_destroy = true
   }
@@ -26,6 +23,19 @@ provider "aws" {
     }
   }
  }
+ # Create Dynamo DB table for backend statefile locking
+
+resource "aws_dynamodb_table" "terraform-state-lock" {
+  name             = "terraform-state-lock"
+  hash_key         = "LockID"
+  billing_mode     = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+
 
 # # resource "aws_s3_bucket_acl" "bucket_acl" {
 # #   bucket = aws_s3_bucket.statefile-bucket.id
@@ -150,15 +160,3 @@ provider "aws" {
   #   Environment = "Dev"
   # }
 
-# Create Dynamo DB table for backend statefile locking
-
-resource "aws_dynamodb_table" "terraform-state-lock" {
-  name             = "terraform-state-lock"
-  hash_key         = "LockID"
-  billing_mode     = "PAY_PER_REQUEST"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-}
