@@ -12,16 +12,7 @@ provider "aws" {
 
 terraform {
   required_providers {
-    acme = {
-      source  = "vancluever/acme"
-      version = "~> 2.0"
-    }
-
-     route53 = {
-      source = "winebarrel/route53"
-      version = "0.1.1"
-    }
-        kubernetes = {
+           kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.0.0"
     }
@@ -82,12 +73,4 @@ provider "kubectl" {
     command     = "aws"
   }
 }
- #Other Providers
- provider "acme" {
-  server_url = "https://acme-v02.api.letsencrypt.org/directory"
-}
-
-provider "route53" {
-  aws_region = "eu-west-2"
-}
-
+ 
