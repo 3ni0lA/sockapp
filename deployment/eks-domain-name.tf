@@ -1,7 +1,7 @@
 # Route 53 and sub-domain name setup
 
 resource "aws_route53_zone" "socks-domain-name" {
-  name = "socksapp.link"
+  name = "eniola.link"
 }
 
 # Get the zone_id for the load balancer
@@ -17,7 +17,7 @@ data "aws_elb_hosted_zone_id" "elb_zone_id" {
 
 resource "aws_route53_record" "socks-record" {
   zone_id = aws_route53_zone.socks-domain-name.zone_id
-  name    = "socksapp.link"
+  name    = "eniola.link"
   type    = "A"
 
   alias {
