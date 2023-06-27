@@ -1,6 +1,3 @@
-# sockapp
-Contribution to a Micro-service Application
-
 # Capstone Project for Group 20 (Cloud Engineering)
 > This is the implementation plan for our cloud/DevOps team. 
 ## Project Idea
@@ -14,6 +11,7 @@ The following are tools, services, and technologies chosen by the DevOps team fo
 
 ## Architecture Diagram 
 
+<img width="1024" alt="Architecture Diagram" src="https://github.com/3ni0lA/sockapp/assets/101342958/762bd804-da1c-4c2b-ba93-ea5febcb8ad3">
 
 ### Cloud Service Provider
 The cloud service provider chosen for this project is ***Amazon Web Services (AWS)***. This is because it has all of the services needed for a successful deployment of the app, most of which have free-tier usage which will reduce infrastructure costs for the company, which is a startup, with no tangible means of funding.
@@ -23,8 +21,9 @@ The cloud service provider chosen for this project is ***Amazon Web Services (AW
 
 ### Infrastructure
 The infrastructure setup will be carried out in two phases.
-#### Phase 1:Containerization.
-This is to enhance the portability of the application and its dependencies, the application will be containerized using ***Docker***. This containerization will also help in scalability by allowing the leverage of container orchestration tools like Kubernetes to easily scale the application horizontally by running multiple instances of the container across a cluster of machines. This enables the app to handle increased traffic and demand, ensuring optimal performance and availability. 
+#### Phase 1 
+##### Containerization.
+To enhance the portability of the application and its dependencies, the application will be containerized using ***Docker***. This containerization will also help in scalability by allowing the leverage of container orchestration tools like Kubernetes to easily scale the application horizontally by running multiple instances of the container across a cluster of machines. This enables the app to handle increased traffic and demand, ensuring optimal performance and availability. 
 The major points/steps involved in the containerization of the app are given as follows;
 - A docker file will be prepared. This gives instructions on how the application should be packaged or containerized. The basic instructions in the docker file will include the base image to use, the working directory for subsequent commands, instructions to copy the contents of the local directory to the working directory, installation of required dependencies, port to expose, and startup command.
 - Once the docker file is prepared, the image will be built using the docker build command. This will create an image of the application.
@@ -90,19 +89,22 @@ Elastic Kubernetes Service also provides built-in load balancing mechanisms to d
  
 
 ### Configuration Management
-  Our team has a unique deployment process tailored specifically to our application's requirements. The deployment process already satisfies our needs and provides the necessary flexibility and control, so therefore a configuration management tool is not necessary.
+Our team has a unique deployment process tailored specifically to our application's requirements. The deployment process already satisfies our needs and provides the necessary flexibility and control, so therefore a configuration management tool is not necessary.
 
 ### Cost Savings Plan (FinOps)
 Effective cost management for DevOps teams is a crucial point, especially for startups with no source of funding. This is what the team has come up with. All costs are to be managed with the ***AWS Calculator***.
+
 It is a cloud cost estimation tool built by AWS that helps DevOps teams understand the cost impact of infrastructure changes before they are deployed. It integrates with Terraform and other infrastructure as code tools to provide cost estimates in real-time.
+
 This calculator is essential for our team and this project because it helps DevOps teams to optimize cloud costs, plan for capacity, and stay within budget while reducing the risk of unplanned costs.
+
 For funding, because there is no credible source of funding from the startup, the DevOps team has decided to sponsor the financial requirements for the successful deployment and hosting of the app.
+
 This is a pictorial summary of the costs likely to be incurred while deploying the Sock Shop app on AWS.
+<img width="428" alt="FinOps total summary" src="https://github.com/3ni0lA/sockapp/assets/101342958/06b96f3e-feee-467e-8c59-99eaad9f5d0e">
+
+
 Most of the tools here are infrastructure-based, the sole reason being that other tools, services and technologies to be used are free to use.
-
-
-This is a breakdown of all the tools and services hosted on AWS that will be used to deploy the Sock Shop app.
-
 
 NB: It is important to note that while the costs might seem a bit overrated for a startup, the team also considered how long the services would be needed, which would not exceed a month, hence the team’s choice of these services. 
 
