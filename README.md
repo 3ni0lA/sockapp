@@ -3,6 +3,9 @@
 ## Project Idea
 The [Sock Shop](https://github.com/microservices-demo/microservices-demo) is a microservice-based application designed to manage and facilitate the distribution, inventory, and tracking of socks within an organization or e-commerce platform. It leverages a set of independent and loosely coupled services to handle various sock-related functionalities, providing a scalable and modular solution for sock management. 
 
+<img width="956" alt="sock shop" src="https://github.com/3ni0lA/sockapp/assets/101342958/2015e53b-f5a6-4bda-b4c0-2548fbb313ed">
+
+
 >Use Case: Let us consider an example of an e-commerce platform that specializes in selling socks. The platform's inventory consists of different types, sizes, and colors of socks from various manufacturers. The Sock Shop can be developed to streamline and optimize the processes involved in managing the sock inventory.
 
 ## Tools, Services, and Technologies
@@ -11,7 +14,8 @@ The following are tools, services, and technologies chosen by the DevOps team fo
 
 ## Architecture Diagram 
 
-<img width="1024" alt="Architecture Diagram" src="https://github.com/3ni0lA/sockapp/assets/101342958/762bd804-da1c-4c2b-ba93-ea5febcb8ad3">
+![IMG-20230627-WA0020](https://github.com/3ni0lA/sockapp/assets/101342958/4cfb69ea-6c87-4ff5-bc27-7b722b1dc414)
+
 
 ### Cloud Service Provider
 The cloud service provider chosen for this project is ***Amazon Web Services (AWS)***. This is because it has all of the services needed for a successful deployment of the app, most of which have free-tier usage which will reduce infrastructure costs for the company, which is a startup, with no tangible means of funding.
