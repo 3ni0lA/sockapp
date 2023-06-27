@@ -29,21 +29,6 @@ The major points/steps involved in the containerization of the app are given as 
 - Once the docker file is prepared, the image will be built using the docker build command. This will create an image of the application.
 The next step involves testing and running the built image using the docker run command to ensure the application is containerized properly.
 - Once the image is running confirming the application was containerized successfully, the next step involves pushing the built image to a container registry such as docker hub. This will allow the image to be available in a secure container registry and allow the pulling of the image onto any environment when needed.
-- Note that this process will be done on an AWS EC2 instance on an Ubuntu OS and a tier-small instance type.
-- Clone the repository of the app: ```
-git clone https://github.com/microservices-demo/microservices-demo```
-- After cloning into the app, get into the app directory using `cd sockshop`
-Then change the directory in the docker file `workdir` to the current working directory you cloned your application.
-- Create the image using this command `docker build -t example/sockapp.latest`. 
-(The tag can be anything, but always make sure to tag the image to your username on docker hub. For example, `damola/exampleapp`. 
-- Don't forget the dot (.). It informs Docker to build the app on the same directory you are in.
-- Check if the image has been successfully built with the command `docker image ls`
-- After the image is successfully built we can now create the container for the app using this command `docker run -d -p 80:3000 example/sockapp:1.0`
-- We use `docker ps` to check if our container is up and running.
-- Copy the IP address of the instance (don't forget to pass the port imputed earlier).
-- On the browser, you should see your application!
-- After this has been done successfully, login to your Docker account using `docker login`
-and push your image to Docker hub using `docker push image name`
 - We plan to persist data using PV persistent volume or persistent volumes claim, which is going to configure our database pod to utilize it and then have it backed up on a storage solution. (Amazon Elastic Block Store EBS or EFS).
 
 
