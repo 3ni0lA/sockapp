@@ -69,7 +69,8 @@ Elastic Kubernetes Service also provides built-in load balancing mechanisms to d
     
 - Create an s3.tf file. This file is going to contain the terraform state file(s3 bucket backend).
 
-- Create a certificate.tf file. This allows web browsers to identify and establish encrypted network connections to websites using the SSL/TLS protocol. We are specifically using Lets Encrypt Certificate because it saves cost, is easy to use and it's compatible with any website, with a Route 53 domain.
+- Create a Route 53 domain.
+  
  - After all these have been created properly, check if your cluster is created successfully. When this is confirmed, connect to your cluster.
  
 
