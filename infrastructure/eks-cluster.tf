@@ -45,41 +45,8 @@ resource "aws_eks_node_group" "eks-node-group" {
     aws_iam_role_policy_attachment.eks-node-AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.eks-node-AmazonEC2ContainerRegistryReadOnly,
   ]
-# Define new policy For EBS 
-resource "aws_iam_policy" "eks_worknode_ebs_policy" {
-  name = "Amazon_EBS_CSI_Driver"
 
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AttachVolume",
-        "ec2:CreateSnapshot",
-        "ec2:CreateTags",
-        "ec2:CreateVolume",
-        "ec2:DeleteSnapshot",
-        "ec2:DeleteTags",
-        "ec2:DeleteVolume",
-        "ec2:DescribeInstances",
-        "ec2:DescribeSnapshots",
-        "ec2:DescribeTags",
-        "ec2:DescribeVolumes",
-        "ec2:DetachVolume"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-}
-# And attach the new policy
-resource "aws_iam_role_policy_attachment" "worknode-AmazonEBSCSIDriver" {
-  policy_arn = aws_iam_policy.eks_worknode_ebs_policy.arn
-  role       = aws_iam_role.eks_worknode.name
-}
+
 }
 module "ebs_csi_eks_role" {
   source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
@@ -99,45 +66,81 @@ module "ebs_csi_eks_role" {
 ###################
 # EBS CSI Driver  #
 ###################
-
 resource "helm_release" "ebs_csi_driver" {
-  name       = "aws-ebs-csi-driver"
-  namespace  = "kube-system"
-  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
+  name       = "ebs-csi-driver"
+  repository = "https://aws.github.io/aws-ebs-csi-driver"
   chart      = "aws-ebs-csi-driver"
+  version    = "v1.2.3"
 
   set {
-    name  = "controller.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    type  = "string"
-    value = module.ebs_csi_eks_role.iam_role_arn
+    name  = "service.region"
+    value = "eu-west-2"
   }
+
+  set {
+    name  = "controller.serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "node.enableVolumeResizing"
+    value = "true"
+  }
+
+  
 }
+
+# resource "helm_release" "ebs_csi_driver" {
+#   name       = "aws-ebs-csi-driver"
+#   namespace  = "kube-system"
+#   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
+#   chart      = "aws-ebs-csi-driver"
+
+#   set {
+#     name  = "controller.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+#     type  = "string"
+#     value = module.ebs_csi_eks_role.iam_role_arn
+#   }
+# }
 
 
 ###################
 # Storage Classes #
 ###################
 
-resource "kubernetes_storage_class_v1" "storageclass_gp2" {
-  depends_on = [helm_release.ebs_csi_driver, module.ebs_csi_eks_role]
+# resource "kubernetes_storage_class_v1" "storageclass_gp2" {
+#   depends_on = [helm_release.ebs_csi_driver, module.ebs_csi_eks_role]
+#   metadata {
+#     name = "gp2-encrypted"
+#     annotations = {
+#       "storageclass.kubernetes.io/is-default-class" = "true"
+#     }
+#   }
+
+#   storage_provisioner    = "ebs.csi.aws.com"
+#   reclaim_policy         = "Delete"
+#   allow_volume_expansion = true
+#   volume_binding_mode    = "WaitForFirstConsumer"
+
+#   parameters = {
+#     type      = "gp2"
+#     encrypted = "true"
+#   }
+resource "kubernetes_storage_class" "ebs_sc" {
   metadata {
-    name = "gp2-encrypted"
-    annotations = {
-      "storageclass.kubernetes.io/is-default-class" = "true"
-    }
+    name = "ebs-sc"
   }
 
-  storage_provisioner    = "ebs.csi.aws.com"
-  reclaim_policy         = "Delete"
-  allow_volume_expansion = true
-  volume_binding_mode    = "WaitForFirstConsumer"
-
+  storage_provisioner = "kubernetes.io/aws-ebs"
   parameters = {
-    type      = "gp2"
-    encrypted = "true"
+    type                  = "gp2"
+    encrypted             = "true"
+    fsType                = "ext4"
+    volumeBindingMode     = "WaitForFirstConsumer"
+    zone                  = "eu-west-2"
   }
-
 }
+
 
 output "endpoint" {
   value = aws_eks_cluster.eks-cluster.endpoint

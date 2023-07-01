@@ -56,7 +56,35 @@ resource "aws_iam_role" "eks-cluster-role" {
 }
 POLICY
 }
-
+# Define new policy For EBS 
+resource "aws_iam_role" "ebs_csi_role" {
+  name = "ebs-csi-role"
+  
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+  resource "aws_iam_role" "eks_worknode_ebs_role" {}
 # Attach required policies to eks cluster role
 
 resource "aws_iam_role_policy_attachment" "eks-cluster-AmazonEKSClusterPolicy" {
@@ -69,4 +97,8 @@ resource "aws_iam_role_policy_attachment" "eks-cluster-AmazonEKSVPCResourceContr
   role       = aws_iam_role.eks-cluster-role.name
 }
 
-
+# And attach the new policy
+resource "aws_iam_role_policy_attachment" "ebs_csi_attachment" {
+  role       = aws_iam_role.ebs_csi_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CSI_EBS_ControllerPolicy"
+}
