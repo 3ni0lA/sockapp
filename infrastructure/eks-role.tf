@@ -84,7 +84,6 @@ resource "aws_iam_role" "ebs_csi_role" {
 }
 EOF
 }
-  resource "aws_iam_role" "eks_worknode_ebs_role" {}
 # Attach required policies to eks cluster role
 
 resource "aws_iam_role_policy_attachment" "eks-cluster-AmazonEKSClusterPolicy" {
@@ -100,5 +99,6 @@ resource "aws_iam_role_policy_attachment" "eks-cluster-AmazonEKSVPCResourceContr
 # And attach the new policy
 resource "aws_iam_role_policy_attachment" "ebs_csi_attachment" {
   role       = aws_iam_role.ebs_csi_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CSI_EBS_ControllerPolicy"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy" 
 }
+

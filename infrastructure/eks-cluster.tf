@@ -41,40 +41,52 @@ resource "aws_eks_node_group" "eks-node-group" {
 
 
 }
-
-
-###################
-# EBS CSI Driver  #
-###################
-resource "helm_release" "ebs_csi_driver" {
-  name       = "ebs-csi-driver"
-  repository = "https://aws.github.io/aws-ebs-csi-driver"
-  chart      = "aws-ebs-csi-driver"
-  version    = "v1.2.3"
-
-  set {
-    name  = "service.region"
-    value = "eu-west-2"
-  }
-
-  set {
-    name  = "controller.serviceAccount.create"
-    value = "false"
-  }
-
-  set {
-    name  = "node.enableVolumeResizing"
-    value = "true"
-  }
-
-  
+data "aws_eks_cluster" "cluster" {
+  name = "eks-cluster"
 }
 
-###################
-# Storage Classes #
-###################
+data "aws_eks_cluster_auth" "cluster" {
+  name = "eks-cluster"
+}
 
-resource "kubernetes_storage_class" "ebs_sc" {
+data "tls_certificate" "cert" {
+  url = data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+}
+
+resource "aws_iam_openid_connect_provider" "openid_connect" {
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.cert.certificates.0.sha1_fingerprint]
+  url             = data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+}
+
+
+module "ebs_csi_driver_controller" {
+  source = "DrFaust92/ebs-csi-driver/kubernetes"
+  version = "3.9.0"
+
+  ebs_csi_controller_image                   = ""
+  ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
+  ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
+  oidc_url                                   = aws_iam_openid_connect_provider.openid_connect.url
+}
+
+
+# ###################
+# # EBS CSI Driver  #
+# ###################
+
+module "aws_ebs_csi_driver_resources" {
+  source                           = "github.com/andreswebs/terraform-aws-eks-ebs-csi-driver//modules/resources"
+  cluster_name                     = "eks-cluster"
+  iam_role_arn                     = var.aws_ebs_csi_driver_iam_role_arn
+  chart_version_aws_ebs_csi_driver = "1.1.0"
+}
+
+
+# ###################
+# # Storage Classes #
+# ###################
+ resource "kubernetes_storage_class" "ebs_sc" {
   metadata {
     name = "ebs-sc"
   }
@@ -89,11 +101,15 @@ resource "kubernetes_storage_class" "ebs_sc" {
   }
 }
 
-
 output "endpoint" {
   value = aws_eks_cluster.eks-cluster.endpoint
 }
 
 output "kubeconfig-certificate-authority-data" {
   value = aws_eks_cluster.eks-cluster.certificate_authority[0].data
+}
+
+output "ebs_csi_iam_role_arn" {
+  description = "IAM role arn of ebs csi"
+  value       = aws_iam_role.ebs_csi_role 
 }
