@@ -12,6 +12,11 @@ terraform {
       source = "gavinbunney/kubectl"
       version = "1.14.0"
     }
+
+     route53 = {
+      source = "winebarrel/route53"
+      version = "0.1.1"
+    }
   }
 }
 
