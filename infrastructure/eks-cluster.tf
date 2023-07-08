@@ -64,7 +64,7 @@ module "ebs_csi_driver_controller" {
   source = "DrFaust92/ebs-csi-driver/kubernetes"
   version = "3.9.0"
 
-  ebs_csi_controller_image                   = ""
+  ebs_csi_controller_image                   = "registry.k8s.io/provider-aws/aws-ebs-csi-driver"
   ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
   ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
   oidc_url                                   = aws_iam_openid_connect_provider.openid_connect.url
@@ -79,7 +79,7 @@ module "aws_ebs_csi_driver_resources" {
   source                           = "github.com/andreswebs/terraform-aws-eks-ebs-csi-driver//modules/resources"
   cluster_name                     = "eks-cluster"
   iam_role_arn                     = var.aws_ebs_csi_driver_iam_role_arn
-  chart_version_aws_ebs_csi_driver = "1.1.0"
+  chart_version_aws_ebs_csi_driver = "1.2.0"
 }
 
 
