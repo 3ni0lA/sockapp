@@ -3,7 +3,8 @@
 ## Project Idea
 The [Sock Shop](https://github.com/microservices-demo/microservices-demo) is a microservice-based application designed to manage and facilitate the distribution, inventory, and tracking of socks within an organization or e-commerce platform. It leverages a set of independent and loosely coupled services to handle various sock-related functionalities, providing a scalable and modular solution for sock management. 
 
-<img width="956" alt="sock shop" src="https://github.com/3ni0lA/sockapp/assets/101342958/2015e53b-f5a6-4bda-b4c0-2548fbb313ed">
+<img width="951" alt="image" src="https://github.com/3ni0lA/sockapp/assets/101342958/9b88d71d-1b14-433c-9d4d-1d670471b80c">
+_A pictorial representation of the [Sock Shop app](http://a6d63f339280e469c822ae5e29f2270f-2079487515.eu-west-2.elb.amazonaws.com/)_.
 
 
 >Use Case: Let us consider an example of an e-commerce platform that specializes in selling socks. The platform's inventory consists of different types, sizes, and colors of socks from various manufacturers. The Sock Shop can be developed to streamline and optimize the processes involved in managing the sock inventory.
@@ -38,8 +39,8 @@ The next step involves testing and running the built image using the docker run 
 
 #### Phase 2
 ##### Infrastructure as Code (IaC) 
-To ensure automation and consistency, we adopted an Infrastructure as Code (IaC) tool, ***Terraform***, to define and create the required infrastructure. This will also ensure the reproducibility of the infrastructure across different environments and this will all help to minimize inconsistencies between different environments and reduce the risk of deployment-related issues.
-IaC tools like Terraform also provide powerful capabilities for scaling the infrastructure by allowing the definition of templates or modules that allow scaling resources up or down based on demand or workload requirements. Another vital reason for adopting Terraform was for auditing and compliance. Infrastructure changes can be logged, tracked and audited, providing a clear history of modifications and ensuring compliance with organizational policies and regulatory requirements.
+To ensure automation and consistency, we adopted an Infrastructure as Code (IaC) tool, ***Terraform***, to define and create the required infrastructure. This will also ensure the reproducibility of the infrastructure across different environments and help minimize inconsistencies between different environments and reduce the risk of deployment-related issues.
+IaC tools like Terraform also provide powerful capabilities for scaling the infrastructure by allowing the definition of templates or modules that allow scaling resources up or down based on demand or workload requirements. Another vital reason for adopting Terraform was for auditing and compliance. Infrastructure changes can be logged, tracked, and audited, providing a clear history of modifications and ensuring compliance with organizational policies and regulatory requirements.
 
 ##### Elastic Kubernetes Service (EKS)
 Due to its ability to scale the application horizontally, we adopted the AWS-managed Kubernetes service, EKS, for the deployment of the Sock Shop application. This scalability allows the application to handle increased traffic and demand without sacrificing performance or availability. 
@@ -103,8 +104,11 @@ NB: It is important to note that while the costs might seem a bit overrated for 
 Monitoring a cluster is crucial for maintaining its health, performance, and stability. This documentation provides an overview of tools commonly used for cluster monitoring, their configuration steps, and the key metrics to monitor, along with their significance.
 ##### 1. Tools for Cluster Monitoring:
 There are several excellent tools available for cluster monitoring. Here are a few widely used options:
-a. ***Prometheus***: An open-source monitoring system that collects metrics from monitored targets, stores them, and provides a flexible querying language (PromQL) for analysis and alerting.
-b. ***Grafana***: A popular open-source visualization and monitoring tool that integrates seamlessly with Prometheus and other data sources. Grafana allows you to create customizable dashboards and alerts.
+a. ***Prometheus***: An open-source monitoring system that collects metrics from monitored targets, stores them, and provides a flexible querying language (PromQL) for analysis and alerting.  
+
+b. ***Grafana***: A popular open-source visualization and monitoring tool that integrates seamlessly with Prometheus and other data sources. Grafana allows you to create customizable dashboards and alerts.  
+Click here to see the team's [Grafana setup](http://a2b185766c5704801bbe2b9d0cd01843-1488618054.eu-west-2.elb.amazonaws.com/?orgId=1).
+
 ##### 2. Configuration Steps:
 The specific configuration steps may vary depending on the monitoring tool and cluster setup. However, the general steps typically involve:
 a. ***Install and configure the monitoring tool***: Follow the official documentation to install and configure the selected monitoring tool on your cluster. This usually involves deploying specific components or agents on the cluster nodes.
@@ -113,12 +117,18 @@ c. ***Set up data retention and storage***: Define how long the collected metric
 d. ***Create dashboards and alerts***: Use the monitoring tool's interface to create dashboards that visualize the collected metrics and set up alerts to receive notifications when certain thresholds are breached.
 ##### 3. Key Metrics to Monitor and Significance:
 When monitoring a cluster, it's essential to focus on relevant metrics that reflect the cluster's health, performance, and resource utilization. Here are some key metrics to consider:
-a. ***CPU and Memory Usage***: Monitor the CPU and memory consumption at the cluster, node, and pod levels. High resource utilization can impact overall performance and may indicate the need for scaling resources.
-b. ***Network Traffic***: Track network traffic to identify any bottlenecks, latency issues, or abnormal patterns. Monitoring network metrics helps ensure smooth communication between cluster components.
-c. ***Disk I/O and Storage Usage***: Keep an eye on disk I/O operations and storage utilization. Excessive disk I/O or running out of storage space can lead to performance degradation or application failures.
-d. ***Pod and Container Health***: Monitor the status, restart count, and resource usage of individual pods and containers. This allows you to identify any failing or misbehaving components.
-e. ***Cluster Events and Logs***: Collect and analyze cluster events and logs to gain insights into system behavior, error conditions, and potential issues. Monitoring logs helps with troubleshooting and identifying anomalies.
-f. ***Application-specific Metrics***: Consider application-specific metrics that are critical to your specific use case. These could include request latency, error rates, database connections, or any other custom metrics that reflect the application's health and performance.
+a. ***CPU and Memory Usage***: Monitor the CPU and memory consumption at the cluster, node, and pod levels. High resource utilization can impact overall performance and may indicate the need for scaling resources.  
+
+b. ***Network Traffic***: Track network traffic to identify any bottlenecks, latency issues, or abnormal patterns. Monitoring network metrics helps ensure smooth communication between cluster components.  
+
+c. ***Disk I/O and Storage Usage***: Keep an eye on disk I/O operations and storage utilization. Excessive disk I/O or running out of storage space can lead to performance degradation or application failures.  
+
+d. ***Pod and Container Health***: Monitor the status, restart count, and resource usage of individual pods and containers. This allows you to identify any failing or misbehaving components.  
+
+e. ***Cluster Events and Logs***: Collect and analyze cluster events and logs to gain insights into system behavior, error conditions, and potential issues. Monitoring logs helps with troubleshooting and identifying anomalies.  
+
+f. ***Application-specific Metrics***: Consider application-specific metrics that are critical to your specific use case. These could include request latency, error rates, database connections, or any other custom metrics that reflect the application's health and performance.  
+
 
 ### Security Plan
 This is a detailed security plan for the infrastructure the team is to set up for the app deployment. Here’s a breakdown of measures that will be ensured for maximum security of the whole infrastructure:
@@ -179,7 +189,7 @@ Deploy the Sockapp application to the EKS cluster using Kubernetes deployment ma
 Handle rolling updates or canary deployments to ensure seamless updates and minimal downtime.
 Apply Kubernetes best practices for managing secrets, environment variables, and configuration.
 #### Monitoring and Observability
-Deploy monitoring infrastructure (e.g., Prometheus, Grafana) alongside the Catchapp application to collect metrics and logs.
+Deploy monitoring infrastructure (e.g., Prometheus, Grafana) alongside the Sock Shop app application to collect metrics and logs.
 Configure alerting rules and thresholds to notify relevant parties of critical incidents or performance issues.
 Integrate with centralized logging solutions (e.g., AWS CloudWatch Logs) for easy access and analysis of application logs.
 #### Post-Deployment Testing:
