@@ -3,8 +3,10 @@
 ## Project Idea
 The [Sock Shop](https://github.com/microservices-demo/microservices-demo) is a microservice-based application designed to manage and facilitate the distribution, inventory, and tracking of socks within an organization or e-commerce platform. It leverages a set of independent and loosely coupled services to handle various sock-related functionalities, providing a scalable and modular solution for sock management. 
 
-<img width="951" alt="image" src="https://github.com/3ni0lA/sockapp/assets/101342958/9b88d71d-1b14-433c-9d4d-1d670471b80c">
-_A pictorial representation of the [Sock Shop app](http://a6d63f339280e469c822ae5e29f2270f-2079487515.eu-west-2.elb.amazonaws.com/)_.
+<img width="951" alt="image" src="https://github.com/3ni0lA/sockapp/assets/101342958/9b88d71d-1b14-433c-9d4d-1d670471b80c">  
+
+A pictorial representation of the [Sock Shop](http://a6d63f339280e469c822ae5e29f2270f-2079487515.eu-west-2.elb.amazonaws.com/) app.  
+
 
 
 >Use Case: Let us consider an example of an e-commerce platform that specializes in selling socks. The platform's inventory consists of different types, sizes, and colors of socks from various manufacturers. The Sock Shop can be developed to streamline and optimize the processes involved in managing the sock inventory.
