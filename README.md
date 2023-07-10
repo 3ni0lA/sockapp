@@ -109,7 +109,10 @@ There are several excellent tools available for cluster monitoring. Here are a f
 a. ***Prometheus***: An open-source monitoring system that collects metrics from monitored targets, stores them, and provides a flexible querying language (PromQL) for analysis and alerting.  
 
 b. ***Grafana***: A popular open-source visualization and monitoring tool that integrates seamlessly with Prometheus and other data sources. Grafana allows you to create customizable dashboards and alerts.  
-Click here to see the team's [Grafana setup](http://a2b185766c5704801bbe2b9d0cd01843-1488618054.eu-west-2.elb.amazonaws.com/?orgId=1).
+Click here to see the team's [Grafana setup](http://a2b185766c5704801bbe2b9d0cd01843-1488618054.eu-west-2.elb.amazonaws.com/?orgId=1).  
+<img width="957" alt="image" src="https://github.com/3ni0lA/sockapp/assets/101342958/5e8cfc49-6904-4a43-8ed1-6be3a804958f">
+
+  
 
 ##### 2. Configuration Steps:
 The specific configuration steps may vary depending on the monitoring tool and cluster setup. However, the general steps typically involve:
