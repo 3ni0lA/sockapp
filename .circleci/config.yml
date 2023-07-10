@@ -1,22 +1,5 @@
 version: 2.1
 jobs:
-  build_docker_image:
-    docker:
-      - image: circleci/node:12
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
-      - run:
-          name: Build Docker image
-          command: |
-            export TAG=0.2.<< pipeline.number >>
-            export IMAGE_NAME=$CIRCLE_PROJECT_REPONAME            
-            cd portfolio-webapp
-            docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
-            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push $DOCKER_LOGIN/$IMAGE_NAME
-
   create_backend_state_store:
     docker:
       - image: zenika/terraform-aws-cli:release-6.0_terraform-0.15.5_awscli-1.27.60
@@ -27,7 +10,7 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/backend/
+            cd backend/
             terraform init
             terraform plan
             terraform apply --auto-approve
@@ -42,7 +25,7 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/infrastructure/
+            cd infrastructure/
             terraform init
             terraform plan
             terraform apply --auto-approve
@@ -62,7 +45,7 @@ jobs:
             export MYSQL_PSSWRD="mysql-password=${MYSQL_PASSWORD}"
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/deployment/
+            cd deployment/
             terraform init
             terraform plan -var $DOCKER_IMAGE -var $MYSQL_PSSWRD -out=plan.txt
             terraform apply plan.txt
@@ -76,7 +59,7 @@ jobs:
             export MYSQL_PSSWRD="mysql-password=${MYSQL_PASSWORD}"
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/deployment/
+            cd deployment/
             terraform init
             terraform plan -var $DOCKER_IMAGE -var $MYSQL_PSSWRD -out=plan.txt
             terraform apply plan.txt
@@ -91,7 +74,7 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/monitoring/
+            cd monitoring/
             terraform init
             terraform plan
             terraform apply --auto-approve
@@ -101,7 +84,7 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/monitoring/
+            cd monitoring/
             terraform init
             terraform plan
             terraform apply --auto-approve
@@ -116,7 +99,7 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/monitoring/
+            cd monitoring/
             terraform init
             terraform destroy --auto-approve
       - run:
@@ -124,7 +107,7 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/deployment/
+            cd deployment/
             terraform init
             terraform destroy --auto-approve
       - run:
@@ -132,21 +115,19 @@ jobs:
           command: |
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            cd terraform-files/infrastructure/
+            cd infrastructure/
             terraform init
             terraform destroy --auto-approve
           
 workflows:
   deployment:
     jobs:
-      - build_docker_image
       - create_backend_state_store:
-          requires: [build_docker_image]
           filters:
             branches:
               only: [create-backend]
       - create_infrastructure:
-          requires: [build_docker_image]
+          requires: [create_backend_state_store]
       - deploy_applications:
           requires: [create_infrastructure]
       - configure_monitoring:
@@ -156,4 +137,3 @@ workflows:
           filters:
             branches:
               only: [destroy]
-      
