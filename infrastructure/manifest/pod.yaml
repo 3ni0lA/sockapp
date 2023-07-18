@@ -4,12 +4,13 @@ metadata:
   name: redis-pod
 spec:
   containers:
-    - name: eks-container
-      image: redis:alpine
+    - image: redis:alpine
+      name:  eks-container
       volumeMounts:
-        - mountPath: "/data"
-          name: redis-volume
+      - mountPath: "/data/redis"
+        name: redis
   volumes:
-    - name: redis-volume
-      persistentVolumeClaim:
-        claimName: ebs-claim
+    - name: redis
+      awsElasticBlockStore:
+        volumeID: "vol-09ba273a7312120ac"
+        fsType: ext4
