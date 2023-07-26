@@ -107,6 +107,9 @@ Monitoring a cluster is crucial for maintaining its health, performance, and sta
 ##### 1. Tools for Cluster Monitoring:
 There are several excellent tools available for cluster monitoring. Here are a few widely used options:
 a. ***Prometheus***: An open-source monitoring system that collects metrics from monitored targets, stores them, and provides a flexible querying language (PromQL) for analysis and alerting.  
+Click here to see the team's [Prometheus setup](http://ab7114c3c822e429aa83bdc341ab5e75-80823439.eu-west-2.elb.amazonaws.com:9090/).  
+![Screenshot 2023-07-18 115800](https://github.com/3ni0lA/sockapp/assets/101342958/a8f8805b-cbc8-46c0-b6ad-0aadea5c4be3)
+
 
 b. ***Grafana***: A popular open-source visualization and monitoring tool that integrates seamlessly with Prometheus and other data sources. Grafana allows you to create customizable dashboards and alerts.  
 Click here to see the team's [Grafana setup](http://a2b185766c5704801bbe2b9d0cd01843-1488618054.eu-west-2.elb.amazonaws.com/?orgId=1).  
