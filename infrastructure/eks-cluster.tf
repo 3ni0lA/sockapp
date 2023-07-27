@@ -28,9 +28,9 @@ resource "aws_eks_node_group" "eks-node-group" {
   subnet_ids      = [aws_subnet.pub-sub1.id, aws_subnet.pub-sub2.id, aws_subnet.priv-sub1.id, aws_subnet.priv-sub2.id]
 
   scaling_config {
-    desired_size = 2
-    max_size     = 3
-    min_size     = 2
+    desired_size = 3
+    max_size     = 5
+    min_size     = 3
   }
 
   depends_on = [
@@ -60,7 +60,7 @@ resource "aws_iam_openid_connect_provider" "openid_connect" {
 }
 
 
-module "ebs_csi_driver_controller" {
+#module "ebs_csi_driver_controller" {
   source = "DrFaust92/ebs-csi-driver/kubernetes"
   version = "3.9.0"
 
@@ -68,19 +68,19 @@ module "ebs_csi_driver_controller" {
   ebs_csi_controller_role_name               = "ebs-csi-driver-controller"
   ebs_csi_controller_role_policy_name_prefix = "ebs-csi-driver-policy"
   oidc_url                                   = aws_iam_openid_connect_provider.openid_connect.url
-}
+}#
 
 
 # ###################
 # # EBS CSI Driver  #
 # ###################
 
-module "aws_ebs_csi_driver_resources" {
+#module "aws_ebs_csi_driver_resources" {
   source                           = "github.com/andreswebs/terraform-aws-eks-ebs-csi-driver//modules/resources"
   cluster_name                     = "eks-cluster"
   iam_role_arn                     = var.aws_ebs_csi_driver_iam_role_arn
   chart_version_aws_ebs_csi_driver = "1.2.0"
-}
+}#
 
 
 # ###################
